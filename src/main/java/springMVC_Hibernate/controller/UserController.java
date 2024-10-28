@@ -3,12 +3,15 @@ package springMVC_Hibernate.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import springMVC_Hibernate.model.User;
 import springMVC_Hibernate.service.UserService;
+
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -33,9 +36,13 @@ public class UserController {
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
-        return "redirect:/";
+    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "addUser";
+        } else {
+            userService.addUser(user);
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/updateUser")
@@ -45,9 +52,13 @@ public class UserController {
     }
 
     @PostMapping("/saveUserAfterUpdate")
-    public String saveUserAfterUpdate(@ModelAttribute("user") User user) {
-        userService.updateUser(user);
-        return "redirect:/";
+    public String saveUserAfterUpdate(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "updateUser";
+        } else {
+            userService.updateUser(user);
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/deleteUser")

@@ -3,6 +3,10 @@ package springMVC_Hibernate.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -13,15 +17,24 @@ public class User {
     private int id;
 
     @Column
+    @NotNull(message = "Name is required")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Name must contains only letters")
     private String name;
 
     @Column
+    @NotNull(message = "Surname is required")
+    @Size(min = 2, max = 50, message = "Surname must be between 2 and 50 characters")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Surname must contains only letters")
     private String surname;
 
     @Column
+    @Min(value = 0, message = "Age not be less 0")
     private int age;
 
     @Column
+    @Min(value = 0, message = "Age not be less 0")
+
     private int salary;
 
     public User() {}
